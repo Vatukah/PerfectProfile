@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import ResumeForm from "./components/form";
+import { Outlet ,useNavigate} from "react-router-dom";
 
 function App() {
   return (
     <div className="bg-gray-100 min-h-screen">
       <Header />
-      <HeroSection />
+      <Outlet/>
+     
       <Footer/>
     </div>
   );
@@ -17,7 +19,7 @@ function Header() {
 
   },[sideBar])
   return (
-    <header className="bg-white shadow">
+    <header className="bg-white shadow sticky top-0 left-0" style={{zIndex:999}} >
       <div className="container  px-2 py-4 flex justify-between items-center">
         <div className="flex justify-evenly items-end">
           <img src="./ppLogo.png" alt="logo" width={"48px"} height={"48px"} />
@@ -61,6 +63,7 @@ function Header() {
 }
 
 function HeroSection() {
+  const navigate =useNavigate();
   return (
     <>
       <section className="bg-[#47bbf0] text-white">
@@ -72,12 +75,13 @@ function HeroSection() {
             Create a standout resume in minutes with our easy-to-use online
             builder.
           </p>
-          <a
-            href="#build"
+          <button
+            href="/build"
             className="bg-white text-[#47bbf0] font-semibold px-6 py-3 rounded-full shadow-md hover:bg-blue-100 transition"
+           onClick={()=> navigate('/build')}
           >
             Get Started
-          </a>
+          </button>
         </div>
       </section>
       <section className="grid grid-cols-2 p-4  h-fit">
@@ -180,3 +184,4 @@ const Footer=()=>{
 }
 
 export default App;
+export {HeroSection};
