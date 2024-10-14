@@ -5,8 +5,11 @@ import App from './App.jsx'
 import {HeroSection} from './App.jsx'
 import './index.css'
 import ResumeForm from './components/form.jsx';
-import Templates from './components/templates.jsx';
+import Templates from './pages/templates/templates.jsx';
 import ResumeProvider from './components/resumeContext.jsx';
+import Dashboard from './pages/dashboard/dashboard.jsx';
+import Auth from './pages/auth/auth.jsx';
+
  const router = createBrowserRouter([{
   path:'/',
   element:<App/>,
@@ -16,14 +19,21 @@ import ResumeProvider from './components/resumeContext.jsx';
       element:<HeroSection/>
     },
     {
-      path:"/build",
+      path:"/build/:template",
       element:<ResumeForm/>
     },
     {
       path:"/templates",
       element:<Templates/>
-    }
+    },{
+ path:"/user/:id",
+ element:<Dashboard/>
+
+ }
   ]
+ },{
+  path:'/signIn',
+  element:<Auth/>
  }
 ])
 

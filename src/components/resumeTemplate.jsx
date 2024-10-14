@@ -1,79 +1,36 @@
-import { memo, useEffect } from "react";
+
+import { useEffect, useRef } from "react";
 import { useResume } from "./resumeContext";
 
 
-const  ResumeTemplate = ()=>{
+const  ResumeTemplate = ({tempId})=>{
  const{resumeData,course} =useResume()
- 
+  const iframeRef =useRef(null);
+  
+  const handleSendData=()=>{
+    if(iframeRef.current){
+         iframeRef.current.contentWindow.postMessage(resumeData,'*');
+    }
+   
+  }
+  const handleTemp=(id)=>{
+     
+    if(iframeRef.current){
+      iframeRef.current.contentWindow.postMessage({type:'temp',temp:id},'*');
+ }
+  }
+
+  useEffect(()=>{
+    handleSendData();
+    console.log("rendered")
+  },[resumeData])
     return(
         <>
-   
-
-
-    <div className="resume-container">
-        <div className="header">
-            <h1>{resumeData.personal?.fullName}</h1>
-            <p>Frontend Developer</p>
-            <p>{resumeData.personal?.email} | {resumeData.personal?.phone}</p>
-        </div>
-
-        <div className="section">
-            <h2>Profile</h2>
-            <p>
-                {resumeData.personal?.summary}
-            </p>
-        </div>
-
-        <div className="section">
-            <h2>Skills</h2>
-            <ul>
-                {resumeData.skills.map((skill,index)=><li key={index}>{skill.skillName}</li>)}
-                
-            </ul>
-        </div>
-
-        <div className="section"> 
-            <h2>Experience</h2>
-            {resumeData.exps.map((exp,index)=>{
-                return (
-               
-            <div className="job" key={index}>
-                <h3>{exp.job_title}</h3>
-                <p>{exp.company_name} | {exp.location}</p>
-                <ul>
-                    <li>{exp.job_description}.</li>
-                   
-                </ul>
-            </div>
-            
-       
-        
-        )
-            })}
-            </div>
-
-        <div className="section">  
-            <h2>Education</h2>
-            {resumeData.courses.map((course,index)=>{
-                return(
-                   
-                <div className="education" key={index}>
-                <h3>{course.course_name}</h3>
-                <p>{course.institute}| {course.start_date} - {course.end_date}</p>
-                </div>
-                    
-                )
-            })}
-          
-           
-        </div>
-
-        
-    </div>
-
-
-        </>
-    )
-}
-
+   <iframe src={`http://localhost:5174/${tempId}`}  ref={iframeRef} className="w-full h-full"></iframe>
+   <div className="absolute right-0 top-0 side_toolBar flex flex-col gap-2  bg-primaryBlue">
+     <button  className="bg-primaryBlue text-white font-semibold  rounded-full shadow-md hover:bg-blue-300 transition w-[2rem] aspect-square" >1</button>
+     <button  className="bg-primaryBlue text-white font-semibold  rounded-full shadow-md hover:bg-blue-300 transition   w-[2rem] aspect-square" >2</button>
+     <button  className="bg-primaryBlue text-white font-semibold  rounded-full shadow-md hover:bg-blue-300 transition  w-[2rem] aspect-square" >3</button>
+   </div>
+   </>)}
 export default ResumeTemplate;

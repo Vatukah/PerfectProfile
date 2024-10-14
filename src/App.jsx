@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ResumeForm from "./components/form";
+import logo from '/ppLogo.png'
 import { Outlet ,useNavigate} from "react-router-dom";
 
 function App() {
@@ -22,7 +22,7 @@ function Header() {
     <header className="bg-white shadow sticky top-0 left-0" style={{zIndex:999}} >
       <div className="container  px-2 py-4 flex justify-between items-center">
         <div className="flex justify-evenly items-end">
-          <img src="./ppLogo.png" alt="logo" width={"48px"} height={"48px"} />
+          <img src={logo} alt="logo" width={"48px"} height={"48px"} />
           <h1 className="text-3xl font-bold text-gray-400 -ml-3">
             erfect Profile
           </h1>
@@ -55,6 +55,16 @@ function Header() {
                 About
               </a>
             </li>
+            <li>
+              <a href="#about" className="text-gray-600 hover:text-blue-600">
+                Sign In
+              </a>
+            </li>
+            <li>
+              <a href="#about" className="text-gray-600 hover:text-blue-600">
+                Sign Up
+              </a>
+            </li>
           </ul>
         </nav>
       </div>
@@ -78,9 +88,9 @@ function HeroSection() {
           <button
             href="/build"
             className="bg-white text-[#47bbf0] font-semibold px-6 py-3 rounded-full shadow-md hover:bg-blue-100 transition"
-           onClick={()=> navigate('/build')}
+           onClick={()=> navigate('/templates')}
           >
-            Get Started
+          Choose Template
           </button>
         </div>
       </section>
@@ -145,12 +155,12 @@ function HeroSection() {
          <p>Simply fill out your information, including work experience, education, and skills.</p>
       </div>
       <div className="  howItsWorks">
-      <i class="fa-solid fa-gears"></i>
+      <i className="fa-solid fa-gears"></i>
        <h3>Customize the Look</h3>
        <p>Choose a template and adjust the design to fit your style</p>
       </div>
       <div className=" howItsWorks">
-      <i class="fa-regular fa-share-from-square"></i>
+      <i className="fa-regular fa-share-from-square"></i>
        <h3>Download and Share</h3>
        <p>Your resume is ready to download and use in minutes.</p>
       </div>

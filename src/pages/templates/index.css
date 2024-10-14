@@ -1,0 +1,19 @@
+.template:hover #tools{
+ visibility: visible;
+}
+.template:hover .useTempBtn{
+    transform: scale(1);
+   }
+#tools{
+    visibility: hidden;
+    transition: visibility .2s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.useTempBtn{
+    transform: scale(.5);
+    transition: transform .2s ease-in;
+}
+@keyframes scaleIn {
+    to{
+        transform: scale(1);
+    }
+}

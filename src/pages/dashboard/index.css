@@ -1,0 +1,47 @@
+#commandDialog button{
+    position: absolute;
+    opacity: 1;
+    animation: rollOut .3s ease-out, fadeIn .01s linear .3s;
+   
+}
+#commandDialog button[name='close']{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+#commandDialog button[name='share']{
+   top:65%;
+   right: 10%;
+   animation-delay: .2s;
+}
+#commandDialog button[name='download']{
+    top:50%;
+    right: -10%;
+    transform: translateY(-50%);
+    animation-delay: .1s;
+ }
+ #commandDialog button[name='edit']{
+    top:20%;
+    right: 10%;
+ }
+#commandDialog{
+    z-index: 9;
+}
+
+@keyframes rollOut {
+    from{
+        top: 50%;
+        right: 50%;
+        transform: translate(-50%,-50%);
+        
+       opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from{
+        opacity: 0;
+       
+    }
+}

@@ -1,10 +1,14 @@
 import { useEffect, useState ,useRef} from "react";
 import { useForm, useFieldArray, set } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import Course from "./courseForm";
 import ExperienceForm from "./experienceForm";
 import ResumeTemplate from "./resumeTemplate";
 import { useResume } from "./resumeContext";
+import MobilePreview from "./mobilePreview";
 export default function ResumeForm() {
+
+  const param= useParams();
   
   const [formHOlderActive, setFormHolderActive] = useState({
     personalForm: false,
@@ -12,6 +16,8 @@ export default function ResumeForm() {
     experienceForm: false,
     skillForm: false,
   });
+  const [mobilePreviewDailog,setMobilePreviewDailog]=useState(false);
+  const [mobileScreen,setMobileScreen]=useState(false);
   const isOnline = window.navigator.onLine;
   const minus = isOnline ? <i className="fa-solid fa-minus"></i> : "-";
   const plus = isOnline ? <i className="fa-solid fa-plus"></i> : "+";
@@ -19,6 +25,7 @@ export default function ResumeForm() {
 
   const {resumeData:myData,updateResumeData:uData}=useResume();
   
+
 
   // update resume data
 
@@ -31,14 +38,34 @@ uData(data);
     
   }
 
+ const  handleViewport=()=>{
+  if(mobilePreviewDailog){
+    document.body.style.overflow='hidden';
+  }else{
+    document.body.style.overflow='unset';
+  }
+  }
+
+ useEffect(()=>{
+  handleViewport();
+
+ },[mobilePreviewDailog])
 
   return (
-    <div className="grid grid-cols lg:grid-cols-[.6fr_1fr] md:grid-cols-[.6fr_1fr] -z-index-1">
-      <div className="formSidebar  bg-white py-6 h-[100vh] overflow-y-auto shadow-lg">
-        <h2 className="text-2xl font-semibold text-primaryBlue text-center">
+    <>
+    <div className="grid grid-cols lg:grid-cols-[.6fr_1fr] md:grid-cols-[.6fr_1fr] -z-index-1 ">
+     
+      <div className="formSidebar  bg-white py-6 h-[100vh] overflow-y-auto shadow-lg" >
+        <div className="flex justify-between md:justify-center lg:justify-center items-center px-2">
+          <div className=" md:text-center lg:text-center">
+        <h2 className="text-2xl font-semibold text-primaryBlue ">
           Build Your Resume
         </h2>
-        <p className="text-center text-gray-600 mb-6">Fill the form</p>
+        <p className=" text-gray-600 mb-6">Fill the form</p></div>
+        <div className="w-[40%] md:w-0 lg:w-0 overflow-hidden flex justify-end items-center p-2 md:p-0 lg:p-0">
+          <button onClick={()=>setMobilePreviewDailog(!mobilePreviewDailog)}>preview</button>
+        </div>
+        </div>
         <div className="personalDetailFormHolder border-b border-primaryBlue">
           <div className={`flex justify-between w-full px-6 py-4 `}>
             <p className="font-semibold ">Personal Details</p>{" "}
@@ -141,17 +168,19 @@ uData(data);
           </div>
         </div>
       </div>
-      <div className="previewBlock py-8 px-6 justify-center hidden lg:flex md:flex">
-        <div className=" resume-preview-container shadow-lg h-[85vh] aspect-[3/4] border border-gray-500 bg-white">
+      <div className={`previewBlock py-8 px-6 justify-center hidden md:flex lg:flex`}>
+        
+        <div className="w-full h-full relative">
 
        
-<ResumeTemplate />
+<ResumeTemplate tempId={param.template}/>
    
 
        </div>
       </div>
     </div>
-  );
+    <MobilePreview active={mobilePreviewDailog} activeHandler={setMobilePreviewDailog}/>
+ </> );
 }
 
 const PersonalDetails = ({updateData,activeStateHandler}) => {
@@ -274,9 +303,10 @@ const PersonalDetails = ({updateData,activeStateHandler}) => {
 
             
           </form>
-          <div className="closeDropDown text-primaryBlue font-semibold ml-auto cursor-pointer" onClick={()=>activeStateHandler((prev)=>{
+          <div className="flex justify-end">
+          <div className="closeDropDown text-primaryBlue font-semibold ml-auto cursor-pointer " onClick={()=>activeStateHandler((prev)=>{
             return {...prev,personalForm:!prev.personalForm}
-          })}>close</div>
+          })}>close</div>  </div>
         </div>
       </div>
     </>
@@ -466,13 +496,14 @@ const Skill = ({updateData,activeStateHandler}) => {
     control,
     name: "skills",
   });
-
+const { setResumeData, resumeData } = useResume();
   const formData = watch();
  
   const handleChange = (data) => {
     updateData(data);
+    
   };
-  const { setResumeData, resumeData } = useResume();
+  
   const remove_entry_from_actual_Data = (i) => {
     const str=formData.skills[i].skillName;
   const filteredArray = resumeData.skills.filter(
