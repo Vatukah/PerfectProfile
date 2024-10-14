@@ -1,0 +1,109 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root{
+  font-size: .8rem;
+}
+#resume-preview-container{
+  font-size: .5rem;
+  width: 100vw;
+  height: 100vh;
+  overflow:auto;  
+
+}
+/* 8.27 x 11.69 inches.  */
+.wrapper{
+  display: flex;
+  justify-content: center;
+ padding: 5em 0;
+  width: 100vw;
+  height: 100vh;}
+/* }
+.resume-container {
+  max-width:8.27in;
+  aspect-ratio: 1/1.4;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+ flex-shrink: 0;
+ 
+}
+
+.header {
+  text-align: center;
+  border-bottom: 2px solid #333;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.header p {
+  font-size: 1em;
+  color: #666;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.section h2 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  color: #ffffff;
+  background-color: #333;
+  padding: .4em 1em;
+
+}
+
+.section p, .section ul {
+  font-size: 1em;
+  line-height: 1.6;
+}
+
+.section ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.job, .education {
+  margin-bottom: 15px;
+}
+
+.job h3, .education h3 {
+  font-size: 1.2em;
+  color: #444;
+}
+
+.job p, .education p {
+  font-size: 1em;
+  color: #666;
+}
+
+ul li {
+  margin-bottom: 8px;
+}
+
+/* Responsive Design */
+
+
+@media (max-width:420px) {
+  :root{
+    font-size: .4rem;
+  }
+}
+@media (max-width:1024px) {
+  :root{
+    font-size: .6rem;
+  }
+}
+@media (min-width:1440px) {
+  :root{
+    font-size: 1.5rem;
+  }
+}
