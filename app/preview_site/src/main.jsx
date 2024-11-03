@@ -53,6 +53,10 @@ const data={
 const router= createBrowserRouter([{
     path:'/:id',
     element:<Template1/>
+},
+{
+    path:'/',
+    element:<Template1/>
 }])
 
 createRoot(document.getElementById('resume-preview-container')).render(

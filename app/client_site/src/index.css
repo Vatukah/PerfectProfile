@@ -7,7 +7,7 @@
   box-sizing: border-box;
 }
 
-:root {
+:root{
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -17,6 +17,10 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 1rem;
+}
+
+header{
+  user-select: none;
 }
 .heading-bg{
  z-index: 9;
@@ -31,14 +35,14 @@
   background-color: #4ec4fe;
   z-index: -1;
 }
-.bulletPoints{
+.bulletPoints {
   position: relative;
   margin-bottom: 1rem;
   margin-left: 2rem;
-  font-size: 2rem;
   font-weight: bold;
 }
-.bulletPoints p{
+.bulletPoints span{
+  display: block;
   font-size:1rem;
   font-weight:normal;
 }
@@ -83,9 +87,8 @@ transform: scale(0.5) ;
   color: #0f91d3;
 }
 .contacts{
-  position: absolute;
-  right: 0px;
-  bottom: 10px;
+ align-self: end;
+ margin-left: auto;
   color: white;
 }
 .contacts a{
@@ -102,10 +105,14 @@ transform: scale(0.5) ;
   @apply block text-primaryBlue font-medium mb-1;
 }
 
+.active{
+  color: #47bbf0;
+}
+
 /* mobile screen  */
-@media (max-width:430px) {
+@media (max-width:480px) {
   :root{
-    font-size: .6rem;
+    font-size: 12px;
   }
   .howItsWorks{
     width: 80%;

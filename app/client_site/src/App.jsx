@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
 import logo from '/ppLogo.png'
-import { Outlet ,useNavigate} from "react-router-dom";
+import { Outlet ,useNavigate,NavLink, Link} from "react-router-dom";
+import { useSession } from "@supabase/auth-helpers-react";
+import {useSupa} from "./hooks/useSupa.js";
+import supabase from "./Auth/supabase/supa.js";
+import AccountCenter from "./components/accountCenter.jsx";
+import Loader from "./components/loader.jsx";
 
 function App() {
+ const {loading}=useSupa();
+  if(loading) return <Loader/>
   return (
     <div className="bg-gray-100 min-h-screen">
       <Header />
@@ -14,13 +21,29 @@ function App() {
 }
 
 function Header() {
+  const navigate=useNavigate();
   const [sideBar,setSideBar]=useState(false);
-  useEffect(()=>{
+  const [accountCenter,setAccountcenter]= useState(false)
+  const {signOut,user} =useSupa();
+  const [fullname,setFullname]=useState("rashmi")
 
-  },[sideBar])
+  const getUsername=async()=>{
+      const {data,error}=await supabase.from('user_profiles').select('full_name').eq('id',user.id);
+      
+      if(data){
+       
+        setFullname(data[0].full_name)
+      }
+  }
+ 
+  const accountBar= <><div className="w-8 aspect-square bg-red-400 text-center font-bold text-white rounded-full" onClick={()=> setAccountcenter(!accountCenter)}> {user?.email[0].toUpperCase()}</div> </>
+  useEffect(()=>{
+  
+   getUsername();
+  },[fullname])
   return (
     <header className="bg-white shadow sticky top-0 left-0" style={{zIndex:999}} >
-      <div className="container  px-2 py-4 flex justify-between items-center">
+      <div className="w-full px-2 py-4 flex justify-between items-center">
         <div className="flex justify-evenly items-end">
           <img src={logo} alt="logo" width={"48px"} height={"48px"} />
           <h1 className="text-3xl font-bold text-gray-400 -ml-3">
@@ -28,45 +51,49 @@ function Header() {
           </h1>
         </div>
         <div className="burger text-2xl rotate-[90deg] font-bold lg:hidden" onClick={(e)=>setSideBar(true)}>III</div>
-        <div className={` lg:hidden sideBar fixed top-0 ${ sideBar?'right-[0%]':'right-[-100%]'} w-[40vw] h-[100vh] bg-white flex justify-center items-start text-2xl pt-16 ` } style={{transition:'right .3s ease-out'}}>
-          <button onClick={()=>setSideBar(false)}>X</button>
-          <div className="flex flex-col gap-8 pt-16">
-          <a href="">Home</a>
-          <a href="">Home</a>
-          <a href="">Home</a>
-          <a href="">Home</a>
+        <div className={` lg:hidden sideBar fixed top-0 ${ sideBar?'right-[0%]':'right-[-100%]'} w-[40vw] h-[100vh] bg-white flex justify-center items-start text-xl pt-16 ` } style={{transition:'right .3s ease-out'}}>
+          <button onClick={()=>setSideBar(false)} className="absolute right-6 top-6">X</button>
+          <div className="">
+            <div className={'flex flex-col gap-8 pt-16'}>
+            <NavLink to="/">Home</NavLink>
+            <NavLink  to={"/templates"}>Templates</NavLink>
+            { !user && (<>
+              <NavLink to="/signIn">Sign In</NavLink>
+              <NavLink to="/signUp" className={"p-2 bg-primaryBlue text-white font-semibold hover:bg-opacity-[0.8] rounded-lg"}>Sign Up</NavLink>
+          </>)}
+
+            {user && <AccountCenter user={fullname} handlers={{signOut}}/>}
+            
+            </div>
+        
           </div>
          
         </div>
-        <nav className="hidden lg:block ">
-          <ul className="flex space-x-6">
-            <li>
-              <a href="#features" className="text-gray-600 hover:text-blue-600">
-                Features
-              </a>
+        <div className="hidden lg:block ">
+          <ul className="flex space-x-4 font-semibold text-gray-400  relative">
+            <li className="hover:text-primaryBlue">
+             
+              <NavLink to={'/'}>Home</NavLink>
             </li>
-            <li>
-              <a href="#pricing" className="text-gray-600 hover:text-blue-600">
-                Pricing
-              </a>
+            <li className=" hover:text-primaryBlue">
+             <NavLink to="/templates">Templates</NavLink>
             </li>
-            <li>
-              <a href="#about" className="text-gray-600 hover:text-blue-600">
-                About
-              </a>
+           
+           { !user && (<><li className=" hover:text-primaryBlue">
+              <NavLink to="/signIn" className={'p-2 hover:bg-gray-200 font-semibold text-gray-400  rounded-lg'}>Sign In</NavLink>
             </li>
-            <li>
-              <a href="#about" className="text-gray-600 hover:text-blue-600">
-                Sign In
-              </a>
-            </li>
-            <li>
-              <a href="#about" className="text-gray-600 hover:text-blue-600">
-                Sign Up
-              </a>
-            </li>
+            <li className=" hover:text-primaryBlue">
+              <NavLink to="/signUp" className={"p-2 bg-primaryBlue text-white font-semibold hover:bg-opacity-[0.8] rounded-lg"}>Sign Up</NavLink>
+            </li></>)}
+            {user && accountBar}
+            {accountCenter && <div className="absolute top-[100%] right-0 w-[16rem] h-[11rem] border border-primaryBlue rounded-lg shadow-lg overflow-hidden bg-white">
+              <AccountCenter user={fullname} handlers={{signOut}}/></div>}
+           
+          
+           
+            
           </ul>
-        </nav>
+        </div>
       </div>
     </header>
   );
@@ -74,6 +101,8 @@ function Header() {
 
 function HeroSection() {
   const navigate =useNavigate();
+
+  
   return (
     <>
       <section className="bg-[#47bbf0] text-white">
@@ -92,7 +121,8 @@ function HeroSection() {
           >
           Choose Template
           </button>
-        </div>
+         
+         </div>
       </section>
       <section className="grid grid-cols-2 p-4  h-fit">
         <div className=" flex justify-center items-center">
@@ -123,16 +153,16 @@ function HeroSection() {
           </h2>
         <div className="text-gray-600 mt-2">
           <p className="bulletPoints">Easy to Use 
-            <p >Our intuitive interface makes resume building simple and stress-free.</p>
+            <span >Our intuitive interface makes resume building simple and stress-free.</span>
             </p>
           <p className="bulletPoints">Customizable Templates
-          <p >Choose from a variety of modern, clean templates designed to impress.</p>
+          <span >Choose from a variety of modern, clean templates designed to impress.</span>
           </p>
           <p className="bulletPoints">Instant Download
-          <p >Export your resume as a PDF, ready to send to potential employers.</p>
+          <span >Export your resume as a PDF, ready to send to potential employers.</span>
           </p>
           <p className="bulletPoints">Secure & Private
-          <p >Your data is safe with us, and your information is never shared.</p>
+          <span >Your data is safe with us, and your information is never shared.</span>
           </p>
         </div>
         </div>
@@ -182,7 +212,7 @@ function HeroSection() {
 const Footer=()=>{
 
   return(<>
-  <footer className="h-[50vh]  bg-[#3fcbfff6] relative">
+  <footer className="  bg-[#3fcbfff6] flex p-2">
   <div className="contacts">
     <a href="#instagram"><i className="fa-brands  fa-instagram"></i></a>
     <a href="#instagram"><i className="fa-brands  fa-x"></i></a>
@@ -194,4 +224,4 @@ const Footer=()=>{
 }
 
 export default App;
-export {HeroSection};
+export {HeroSection,Header};

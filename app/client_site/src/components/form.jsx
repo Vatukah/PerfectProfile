@@ -168,7 +168,7 @@ uData(data);
           </div>
         </div>
       </div>
-      <div className={`previewBlock py-8 px-6 justify-center hidden md:flex lg:flex`}>
+      <div className={`previewBlock p-2 justify-center hidden md:flex lg:flex`}>
         
         <div className="w-full h-full relative">
 
@@ -478,6 +478,7 @@ const Skill = ({updateData,activeStateHandler}) => {
   ) : (
     <div className="text-xl  ">+</div>
   );
+  const [optional,setOptional]=useState(false);
   const { register, handleSubmit, control,watch } = useForm({
     defaultValues: {
       skills: [
@@ -588,6 +589,11 @@ const { setResumeData, resumeData } = useResume();
             </div>
 
             {/* Skill Description */}
+            <div className="flex p-4 justify-between">
+              <p>Add more details</p>
+              <div className={`text-primaryBlue font-semibold ${optional?'rotate-180':''} transition-transform`} onClick={()=>setOptional(!optional)}>v</div>
+            </div>
+            <div className={`optionalBlock  ${optional?'h-auto':'h-0'} overflow-hidden`}>
             <div>
               <label className="label">Skill Description (Optional)</label>
               <textarea
@@ -608,6 +614,7 @@ const { setResumeData, resumeData } = useResume();
                 placeholder="Enter relevant certifications"
                 onInput={()=>handleChange(formData)}
               />
+            </div>
             </div>
           </div>
         ))}
@@ -632,7 +639,7 @@ const { setResumeData, resumeData } = useResume();
             return {...prev,skillForm:!prev.skillForm}
           })}>close</div>
         </div>
-     
+        {/* sRxEWO4EUYYTmiuK   supaPass */}
     </div>
   );
 };
